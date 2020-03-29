@@ -24,3 +24,10 @@ This uses [dwm 6.2](https://dl.suckless.org/dwm/dwm-6.2.tar.gz)
 - [swaptags](https://dwm.suckless.org/patches/swaptags/dwm-swaptags-6.2.diff)
 - [switchcol](https://dwm.suckless.org/patches/switchcol/dwm-switchcol-6.1.diff)
 - [transfer](https://dwm.suckless.org/patches/transfer/dwm-transferall-6.2.diff)
+
+## Layouts available:
+
+- Default
+- [Columns](https://dwm.suckless.org/patches/columns/)
+- [Fibonacci](https://dwm.suckless.org/patches/fibonacci/)
+- [Horizontal Grid](https://dwm.suckless.org/patches/horizgrid/)
