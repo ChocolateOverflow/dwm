@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#include "fibonacci.c"
+
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -43,6 +45,8 @@ static const Layout layouts[] = {
 	{ "[M]",      monocle },
 	{ "|||",      col },
 	{ NULL,       NULL },
+ 	{ "[@]",      spiral },
+ 	{ "[\\]",      dwindle },
 };
 
 /* key definitions */
