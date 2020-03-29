@@ -1,6 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 #include "fibonacci.c"
+#include "horizgrid.c"
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -47,6 +48,7 @@ static const Layout layouts[] = {
 	{ NULL,       NULL },
  	{ "[@]",      spiral },
  	{ "[\\]",      dwindle },
+	{ "###",      horizgrid },
 };
 
 /* key definitions */
