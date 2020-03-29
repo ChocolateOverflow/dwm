@@ -149,6 +149,7 @@ static void arrange(Monitor *m);
 static void arrangemon(Monitor *m);
 static void attach(Client *c);
 static void attachaside(Client *c);
+static void attachbelow(Client *c);
 static void attachstack(Client *c);
 static void buttonpress(XEvent *e);
 static void checkotherwm(void);
@@ -421,6 +422,17 @@ attachaside(Client *c) {
 	at->next = c;
 }
 
+
+void
+attachbelow(Client *c)
+{
+	Client *below = c->mon->clients;
+	for (; below && below->next; below = below->next);
+	if (below)
+		below->next = c;
+	else
+		c->mon->clients = c;
+}
 
 void
 attachstack(Client *c)
@@ -1079,6 +1091,7 @@ manage(Window w, XWindowAttributes *wa)
 	if (c->isfloating)
 		XRaiseWindow(dpy, c->win);
 	attachaside(c);
+	attachbelow(c);
 	attachstack(c);
 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
 		(unsigned char *) &(c->win), 1);
@@ -1446,6 +1459,7 @@ sendmon(Client *c, Monitor *m)
 	c->mon = m;
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
 	attachaside(c);
+	attachbelow(c);
 	attachstack(c);
 	focus(NULL);
 	arrange(NULL);
@@ -1934,6 +1948,7 @@ updategeom(void)
 					c->mon = mons;
 					attach(c);
 					attachaside(c);
+					attachbelow(c);
 					attachstack(c);
 				}
 				if (m == selmon)
