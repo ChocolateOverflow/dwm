@@ -1,4 +1,4 @@
 *.o
 *.orig
 *.rej
-./patches
+patches
