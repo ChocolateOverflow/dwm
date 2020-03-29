@@ -221,6 +221,7 @@ static void sighup(int unused);
 static void sigterm(int unused);
 static void spawn(const Arg *arg);
 static void swapfocus(const Arg *arg);
+static void switchcol(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void tagtoleft(const Arg *arg);
@@ -1799,7 +1800,7 @@ swapfocus(const Arg *arg)
 {
 	if (!selmon->sel)
 		return;
-	if(selmon->pertag->prevclient[selmon->pertag->curtag] != NULL 
+	if(selmon->pertag->prevclient[selmon->pertag->curtag] != NULL
 			&& ISVISIBLE(selmon->pertag->prevclient[selmon->pertag->curtag])){
 		focus(selmon->pertag->prevclient[selmon->pertag->curtag]);
 		restack(selmon->pertag->prevclient[selmon->pertag->curtag]->mon);
@@ -1817,6 +1818,35 @@ swapfocus(const Arg *arg)
 }
 
 void
+switchcol(const Arg *arg)
+{
+	Client *c, *t;
+	int col = 0;
+	int i;
+
+	if (!selmon->sel)
+		return;
+	for (i = 0, c = nexttiled(selmon->clients); c ;
+	     c = nexttiled(c->next), i++) {
+		if (c == selmon->sel)
+			col = (i + 1) > selmon->nmaster;
+	}
+	if (i <= selmon->nmaster)
+		return;
+	for (c = selmon->stack; c; c = c->snext) {
+		if (!ISVISIBLE(c))
+			continue;
+		for (i = 0, t = nexttiled(selmon->clients); t && t != c;
+		     t = nexttiled(t->next), i++);
+		if (t && (i + 1 > selmon->nmaster) != col) {
+			focus(c);
+			restack(selmon);
+			break;
+		}
+	}
+}
+
+void
 tag(const Arg *arg)
 {
 	unsigned int tagmask, tagindex;
@@ -1824,12 +1854,12 @@ tag(const Arg *arg)
 	if (selmon->sel && arg->ui & TAGMASK) {
 		selmon->sel->tags = arg->ui & TAGMASK;
 		focus(NULL);
-		
+
 		selmon->pertag->prevclient[selmon->pertag->curtag] = NULL;
 		for(tagmask = arg->ui & TAGMASK, tagindex = 1; tagmask!=0; tagmask >>= 1, tagindex++)
 			if(tagmask & 1)
 				selmon->pertag->prevclient[tagindex] = NULL;
-		
+
 		arrange(selmon);
 	}
 }
@@ -1966,11 +1996,11 @@ toggletag(const Arg *arg)
 	if (newtags) {
 		selmon->sel->tags = newtags;
 		focus(NULL);
-		
+
 		for(tagmask = arg->ui & TAGMASK, tagindex = 1; tagmask!=0; tagmask >>= 1, tagindex++)
 			if(tagmask & 1)
 				selmon->pertag->prevclient[tagindex] = NULL;
-		
+
 		arrange(selmon);
 	}
 }
