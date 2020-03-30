@@ -96,11 +96,11 @@ static Key keys[] = {
 	{ SUPER,									XK_F2,		setlayout,			{.v = &layouts[1]} }, // floating
 	{ SUPER,									XK_F3,		setlayout,			{.v = &layouts[2]} }, // spiral
 	{ SUPER,									XK_F4,		setlayout,			{.v = &layouts[3]} }, // dwindle
-	{ SUPER,									XK_F6,		setlayout,			{.v = &layouts[4]} }, // col
-	{ SUPER,									XK_F7,		setlayout,			{.v = &layouts[5]} }, // horizgrid
-	{ SUPER,									XK_F8,		setlayout,			{.v = &layouts[6]} }, // centeredmaster
-	{ SUPER,									XK_F9,		setlayout,			{.v = &layouts[7]} }, // centeredfloatingmaster
-	{ SUPER,									XK_F10,		setlayout,			{.v = &layouts[8]} }, // monocle
+	{ SUPER,									XK_F5,		setlayout,			{.v = &layouts[4]} }, // col
+	{ SUPER,									XK_F6,		setlayout,			{.v = &layouts[5]} }, // horizgrid
+	{ SUPER,									XK_F7,		setlayout,			{.v = &layouts[6]} }, // centeredmaster
+	{ SUPER,									XK_F8,		setlayout,			{.v = &layouts[7]} }, // centeredfloatingmaster
+	{ SUPER,									XK_F9,		setlayout,			{.v = &layouts[8]} }, // monocle
 	{ SUPER,									XK_comma,	cyclelayout,		{.i = -1 } },
 	{ SUPER,									XK_period,	cyclelayout,		{.i = +1 } },
 	{ SUPER,									XK_space,	setlayout,			{0} },
@@ -142,9 +142,9 @@ static Key keys[] = {
 	TAGKEYS(									XK_8,									7)
 	TAGKEYS(									XK_9,									8)
 // ?
-	{ SUPER|SHIFT,							XK_F5,		quit,					{0} },
+	{ SUPER|SHIFT,							XK_F10,		quit,					{0} },
 // Restart dwm
-	{ SUPER,									XK_F5,      quit,					{1} },
+	{ SUPER,									XK_F10,      quit,					{1} },
 };
 
 /* button definitions */
