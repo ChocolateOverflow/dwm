@@ -38,23 +38,28 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
- 	{ "[@]",      spiral },
- 	{ "[\\]",      dwindle },
-	{ "|||",      col },
-	{ "###",      horizgrid },
-	{ "[M]",      monocle },
-	{ NULL,       NULL },
+	{ "[]=",		tile },    /* first entry is default */
+	{ "><>",		NULL },    /* no layout function means floating behavior */
+ 	{ "[@]",		spiral },
+ 	{ "[\\]",	dwindle },
+	{ "|||",		col },
+	{ "###",    horizgrid },
+	{ "|M|",		centeredmaster },
+	{ ">M>",    centeredfloatingmaster },
+	{ "[M]",    monocle },
+	{ NULL,		NULL },
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define SUPER	Mod4Mask
+#define SHIFT	ShiftMask
+#define ALT		Mod1Mask
+#define CTRL	ControlMask
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+	{ SUPER,                KEY,      view,           {.ui = 1 << TAG} }, \
+	{ SUPER|CTRL,				KEY,      toggleview,     {.ui = 1 << TAG} }, \
+	{ SUPER|SHIFT,          KEY,      tag,            {.ui = 1 << TAG} }, \
+	{ SUPER|CTRL|SHIFT,		KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -62,68 +67,70 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-//static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "/bin/sh", "-c", "st", NULL };
 
 static Key keys[] = {
 	/* modifier								key			function				argument */
-	//{ MODKEY,								XK_p,			spawn,				{.v = dmenucmd } },
-	//{ MODKEY|ShiftMask,					XK_Return,	spawn,				{.v = termcmd } },
-	//{ MODKEY,								XK_b,			togglebar,			{0} },
+	{ SUPER,									XK_d,			spawn,				{.v = dmenucmd } },
+	{ SUPER,									XK_Return,	spawn,				{.v = termcmd } },
+	//{ SUPER,								XK_b,			togglebar,			{0} },
 //	Go up & down the stack
-	{ MODKEY,								XK_j,			focusstack,			{.i = +1 } },
-	{ MODKEY,								XK_k,			focusstack,			{.i = -1 } },
+	{ SUPER,									XK_j,			focusstack,			{.i = +1 } },
+	{ SUPER,									XK_k,			focusstack,			{.i = -1 } },
 //	swap focus between clients? tags?
-	{ MODKEY,								XK_Tab,		swapfocus,			{.i = -1 } },
+	{ SUPER,									XK_Tab,		swapfocus,			{.i = -1 } },
 //	switch between master and stack
-	{	MODKEY,								XK_g,			switchcol,			{0} },
+	{ SUPER,									XK_g,			switchcol,			{0} },
 //	Increase clients in master???
-	{ MODKEY,								XK_i,			incnmaster,			{.i = +1 } },
-	{ MODKEY,								XK_d,			incnmaster,			{.i = -1 } },
+	{ SUPER,									XK_q,			incnmaster,			{.i = +1 } },
+	{ SUPER,									XK_w,			incnmaster,			{.i = -1 } },
 // Change size of master
-	{ MODKEY|ShiftMask,					XK_h,			setmfact,			{.f = -0.05} },
-	{ MODKEY|ShiftMask,					XK_l,			setmfact,			{.f = +0.05} },
+	{ SUPER|SHIFT,							XK_h,			setmfact,			{.f = -0.05} },
+	{ SUPER|SHIFT,							XK_l,			setmfact,			{.f = +0.05} },
 // ?
-	//{ MODKEY,								XK_Return,	zoom,					{0} },
-	//{ MODKEY,								XK_Tab,		view,					{0} },
-//	{ MODKEY|ShiftMask,					XK_c,			killclient,			{0} },
+	//{ SUPER,								XK_Return,	zoom,					{0} },
+	//{ SUPER,								XK_Tab,		view,					{0} },
+//	{ SUPER|SHIFT,					XK_c,			killclient,			{0} },
 //	Change between layouts
-	{ MODKEY,								XK_F1,		setlayout,			{.v = &layouts[0]} }, // tile
-	{ MODKEY,								XK_F2,		setlayout,			{.v = &layouts[1]} }, // floating
-	{ MODKEY,								XK_F3,		setlayout,			{.v = &layouts[2]} }, // spiral
-	{ MODKEY,								XK_F4,		setlayout,			{.v = &layouts[3]} }, // dwindle
-	{ MODKEY,								XK_F6,		setlayout,			{.v = &layouts[4]} }, // col
-	{ MODKEY,								XK_F7,		setlayout,			{.v = &layouts[5]} }, // horizgrid
-	{ MODKEY,								XK_F8,		setlayout,			{.v = &layouts[6]} }, // monocle
-	{ MODKEY,								XK_comma,	cyclelayout,		{.i = -1 } },
-	{ MODKEY,								XK_period,	cyclelayout,		{.i = +1 } },
-	{ MODKEY,								XK_space,	setlayout,			{0} },
+	{ SUPER,									XK_F1,		setlayout,			{.v = &layouts[0]} }, // tile
+	{ SUPER,									XK_F2,		setlayout,			{.v = &layouts[1]} }, // floating
+	{ SUPER,									XK_F3,		setlayout,			{.v = &layouts[2]} }, // spiral
+	{ SUPER,									XK_F4,		setlayout,			{.v = &layouts[3]} }, // dwindle
+	{ SUPER,									XK_F6,		setlayout,			{.v = &layouts[4]} }, // col
+	{ SUPER,									XK_F7,		setlayout,			{.v = &layouts[5]} }, // horizgrid
+	{ SUPER,									XK_F8,		setlayout,			{.v = &layouts[6]} }, // centeredmaster
+	{ SUPER,									XK_F9,		setlayout,			{.v = &layouts[7]} }, // centeredfloatingmaster
+	{ SUPER,									XK_F10,		setlayout,			{.v = &layouts[8]} }, // monocle
+	{ SUPER,									XK_comma,	cyclelayout,		{.i = -1 } },
+	{ SUPER,									XK_period,	cyclelayout,		{.i = +1 } },
+	{ SUPER,									XK_space,	setlayout,			{0} },
 // Toggle floating/sticky/fullscr
-	{ MODKEY,								XK_u,			togglefloating,	{0} },
-	{ MODKEY|ShiftMask,					XK_u,			togglesticky,		{0} },
-	{ MODKEY,								XK_F11,		togglefullscr,		{0} },
+	{ SUPER,									XK_u,			togglefloating,	{0} },
+	{ SUPER|SHIFT,							XK_u,			togglesticky,		{0} },
+	{ SUPER,									XK_F11,		togglefullscr,		{0} },
 // ?
-	//{ MODKEY,								XK_0,			view,					{.ui = ~0 } },
-	//{ MODKEY|ShiftMask,				XK_0,			tag,					{.ui = ~0 } },
+	//{ SUPER,								XK_0,			view,					{.ui = ~0 } },
+	//{ SUPER|SHIFT,						XK_0,			tag,					{.ui = ~0 } },
 // Move between monitors
-	//{ MODKEY,								XK_comma,	focusmon,			{.i = -1 } },
-	//{ MODKEY,								XK_period,	focusmon,			{.i = +1 } },
-	//{ MODKEY|ShiftMask,				XK_comma,	tagmon,				{.i = -1 } },
-	//{ MODKEY|ShiftMask,				XK_period,	tagmon,				{.i = +1 } },
+	//{ SUPER,								XK_comma,	focusmon,			{.i = -1 } },
+	//{ SUPER,								XK_period,	focusmon,			{.i = +1 } },
+	//{ SUPER|SHIFT,						XK_comma,	tagmon,				{.i = -1 } },
+	//{ SUPER|SHIFT,						XK_period,	tagmon,				{.i = +1 } },
 //	Focus/Move Tags
-	{ MODKEY,								XK_z,			viewtoleft,			{0} },
-	{ MODKEY,								XK_x,			viewtoright,		{0} },
-	{ MODKEY|ShiftMask,					XK_z,			tagtoleft,			{0} },
-	{ MODKEY|ShiftMask,					XK_x,			tagtoright,			{0} },
+	{ SUPER,									XK_z,			viewtoleft,			{0} },
+	{ SUPER,									XK_x,			viewtoright,		{0} },
+	{ SUPER|SHIFT,							XK_z,			tagtoleft,			{0} },
+	{ SUPER|SHIFT,							XK_x,			tagtoright,			{0} },
 //	Move floating window to spot 1-9 on screen
-	{ MODKEY|ControlMask,				XK_q,			moveplace,			{.ui = WIN_NW }},
-	{ MODKEY|ControlMask,				XK_w,			moveplace,			{.ui = WIN_N  }},
-	{ MODKEY|ControlMask,				XK_e,			moveplace,			{.ui = WIN_NE }},
-	{ MODKEY|ControlMask,				XK_a,			moveplace,			{.ui = WIN_W  }},
-	{ MODKEY|ControlMask,				XK_s,			moveplace,			{.ui = WIN_C  }},
-	{ MODKEY|ControlMask,				XK_d,			moveplace,			{.ui = WIN_E  }},
-	{ MODKEY|ControlMask,				XK_z,			moveplace,			{.ui = WIN_SW }},
-	{ MODKEY|ControlMask,				XK_x,			moveplace,			{.ui = WIN_S  }},
-	{ MODKEY|ControlMask,				XK_c,			moveplace,			{.ui = WIN_SE }},
+	{ SUPER|CTRL,							XK_q,			moveplace,			{.ui = WIN_NW }},
+	{ SUPER|CTRL,							XK_w,			moveplace,			{.ui = WIN_N  }},
+	{ SUPER|CTRL,							XK_e,			moveplace,			{.ui = WIN_NE }},
+	{ SUPER|CTRL,							XK_a,			moveplace,			{.ui = WIN_W  }},
+	{ SUPER|CTRL,							XK_s,			moveplace,			{.ui = WIN_C  }},
+	{ SUPER|CTRL,							XK_d,			moveplace,			{.ui = WIN_E  }},
+	{ SUPER|CTRL,							XK_z,			moveplace,			{.ui = WIN_SW }},
+	{ SUPER|CTRL,							XK_x,			moveplace,			{.ui = WIN_S  }},
+	{ SUPER|CTRL,							XK_c,			moveplace,			{.ui = WIN_SE }},
 //	Go to tag
 	TAGKEYS(									XK_1,									0)
 	TAGKEYS(									XK_2,									1)
@@ -135,24 +142,24 @@ static Key keys[] = {
 	TAGKEYS(									XK_8,									7)
 	TAGKEYS(									XK_9,									8)
 // ?
-	{ MODKEY|ShiftMask,					XK_F5,		quit,					{0} },
+	{ SUPER|SHIFT,							XK_F5,		quit,					{0} },
 // Restart dwm
-	{ MODKEY,								XK_F5,      quit,					{1} },
+	{ SUPER,									XK_F5,      quit,					{1} },
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
-	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	//{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	/* click                event mask     button          function        argument */
+	{ ClkLtSymbol,				0,             Button1,        setlayout,      {0} },
+	{ ClkLtSymbol,          0,             Button3,        setlayout,      {.v = &layouts[2]} },
+	{ ClkWinTitle,          0,             Button2,        zoom,           {0} },
+	//{ ClkStatusText,      0,             Button2,        spawn,          {.v = termcmd } },
+	{ ClkClientWin,         SUPER,			Button1,        movemouse,      {0} },
+	{ ClkClientWin,         SUPER,         Button2,        togglefloating, {0} },
+	{ ClkClientWin,         SUPER,         Button3,        resizemouse,    {0} },
+	{ ClkTagBar,            0,             Button1,        view,           {0} },
+	{ ClkTagBar,            0,             Button3,        toggleview,     {0} },
+	{ ClkTagBar,            SUPER,         Button1,        tag,            {0} },
+	{ ClkTagBar,            SUPER,         Button3,        toggletag,      {0} },
 };
