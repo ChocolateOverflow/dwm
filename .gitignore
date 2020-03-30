@@ -1,6 +1,5 @@
 *.o
 *.orig
 *.rej
-config.h
 dwm
 patches
