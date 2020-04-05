@@ -92,15 +92,15 @@ static Key keys[] = {
 	//{ SUPER,								XK_Tab,		view,					{0} },
 //	{ SUPER|SHIFT,					XK_c,			killclient,			{0} },
 //	Change between layouts
-	{ SUPER,									XK_F1,		setlayout,			{.v = &layouts[0]} }, // tile
-	{ SUPER,									XK_F2,		setlayout,			{.v = &layouts[1]} }, // floating
-	{ SUPER,									XK_F3,		setlayout,			{.v = &layouts[2]} }, // spiral
-	{ SUPER,									XK_F4,		setlayout,			{.v = &layouts[3]} }, // dwindle
-	{ SUPER,									XK_F5,		setlayout,			{.v = &layouts[4]} }, // col
-	{ SUPER,									XK_F6,		setlayout,			{.v = &layouts[5]} }, // horizgrid
-	{ SUPER,									XK_F7,		setlayout,			{.v = &layouts[6]} }, // centeredmaster
-	{ SUPER,									XK_F8,		setlayout,			{.v = &layouts[7]} }, // centeredfloatingmaster
-	{ SUPER,									XK_F9,		setlayout,			{.v = &layouts[8]} }, // monocle
+	//{ SUPER,									XK_F1,		setlayout,			{.v = &layouts[0]} }, // tile
+	//{ SUPER,									XK_F2,		setlayout,			{.v = &layouts[1]} }, // floating
+	//{ SUPER,									XK_F3,		setlayout,			{.v = &layouts[2]} }, // spiral
+	//{ SUPER,									XK_F4,		setlayout,			{.v = &layouts[3]} }, // dwindle
+	//{ SUPER,									XK_F5,		setlayout,			{.v = &layouts[4]} }, // col
+	//{ SUPER,									XK_F6,		setlayout,			{.v = &layouts[5]} }, // horizgrid
+	//{ SUPER,									XK_F7,		setlayout,			{.v = &layouts[6]} }, // centeredmaster
+	//{ SUPER,									XK_F8,		setlayout,			{.v = &layouts[7]} }, // centeredfloatingmaster
+	//{ SUPER,									XK_F9,		setlayout,			{.v = &layouts[8]} }, // monocle
 	{ SUPER,									XK_comma,	cyclelayout,		{.i = -1 } },
 	{ SUPER,									XK_period,	cyclelayout,		{.i = +1 } },
 	{ SUPER,									XK_space,	setlayout,			{0} },
